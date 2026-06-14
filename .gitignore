@@ -1,0 +1,11 @@
+# direnv
+.direnv/
+.envrc
+
+# Agent Tools
+.serena/
+
+
+# Added by cargo
+
+/target
