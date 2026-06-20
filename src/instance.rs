@@ -18,12 +18,15 @@ impl PinwheelInstance {
         &self.periods
     }
 
-    /// density(c): 密度
+    /// 密度 `D(A) = Σ 1/a_i`
     /// 厳密な有理数比較のため、
-    /// Ratio<i64> (cppの boost::rational<long long>のRust版)
+    /// Ratio<i64> (cpp の boost::rational<long long> の Rust 版)
     /// で計算
     pub fn density(&self) -> Ratio<i64> {
-        self.periods.iter().map(|&a| Ratio::new(1, a as i64)).sum()
+        self.periods
+            .iter()
+            .map(|&period| Ratio::new(1, period as i64))
+            .sum()
     }
 }
 
