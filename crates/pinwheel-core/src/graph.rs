@@ -14,8 +14,7 @@ pub fn successors(state: &State) -> Vec<(u32, State)> {
     let tasks = state.as_slice();
     let mut out = Vec::new();
     let mut prev: Option<(u32, u32)> = None;
-    for executed in 0..tasks.len() {
-        let t = tasks[executed];
+    for (executed, &t) in tasks.iter().enumerate() {
         let key = (t.urgency, t.period);
         if prev == Some(key) {
             continue; // 直前と同一のタスク -> 商グラフでは同じ辺
