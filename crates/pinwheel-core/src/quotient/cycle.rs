@@ -2,7 +2,9 @@
 
 use std::collections::BTreeSet;
 
-use crate::{graph::StateGraph, instance::PinwheelInstance, schedule::Schedule};
+use crate::instance::PinwheelInstance;
+
+use super::{graph::StateGraph, schedule::Schedule};
 
 /// グラフ中の単純有向閉路を全て列挙し、スケジュール（周期ラベル列）の
 /// 巡回シフト同値類の代表元の集合を返す

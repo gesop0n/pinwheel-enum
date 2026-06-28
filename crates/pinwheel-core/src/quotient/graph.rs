@@ -2,10 +2,9 @@
 
 use std::collections::{BTreeMap, BTreeSet};
 
-use crate::{
-    instance::PinwheelInstance,
-    state::{State, next_state},
-};
+use crate::instance::PinwheelInstance;
+
+use super::state::{State, next_state};
 
 /// `state` から実行できる各手について、`(実行した周期, 翌日状態)` を返す
 /// - GWS Prop 4.4 (同周期タスクは区別しない): 同一 `(urgency, periods)` のタスクは先頭のみ試す

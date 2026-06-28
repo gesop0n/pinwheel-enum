@@ -1,7 +1,7 @@
 use clap::{Parser, Subcommand, ValueEnum};
-use pinwheel_core::enumerate::enumerate_schedules;
 use pinwheel_core::instance::PinwheelInstance;
 use pinwheel_core::labeled::enumerate_labeled;
+use pinwheel_core::quotient::enumerate_schedules;
 
 /// 輪番割当（pinwheel scheduling）のスケジュール列挙 CLI
 #[derive(Parser)]
