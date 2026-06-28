@@ -12,7 +12,11 @@ use crate::instance::PinwheelInstance;
 pub type LabeledState = Vec<u32>;
 
 /// タスク `executed` を実行した翌日の状態。`executed` 以外に締切超過のタスクがあれば None。
-pub fn labeled_next(periods: &[u32], state: &LabeledState, executed: usize) -> Option<LabeledState> {
+pub fn labeled_next(
+    periods: &[u32],
+    state: &LabeledState,
+    executed: usize,
+) -> Option<LabeledState> {
     let mut next = vec![0u32; periods.len()];
     for (i, &period) in periods.iter().enumerate() {
         if i == executed {
