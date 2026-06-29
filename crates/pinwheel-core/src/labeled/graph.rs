@@ -1,14 +1,16 @@
 //! 目的B のラベル付き状態グラフ `G_A`（Aut で割らない）。
 //!
-//! 状態は各タスクの urgency ベクトル（添字＝タスク、ソートしない）。同周期タスクを
-//! 畳まないので holonomy が展開された具体状態が頂点になる。目的A の商グラフ
-//! （`super::super::quotient::graph::StateGraph`）と対をなす。
+//! 状態は各タスクの「前回実行からの経過日数」ベクトル `x`（添字＝タスク、ソートしない）で、
+//! GSW の状態原点 `X0 = (0,…,0)` をそのまま使う。同周期タスクを畳まないので holonomy が
+//! 展開された具体状態が頂点になる。目的A の商グラフ（urgency＋ソート、
+//! `super::super::quotient::graph::StateGraph`）と対をなす。urgency `u_i = a_i - 1 - x_i`
+//! とは座標が違うだけで同じグラフ（列挙結果は不変）。
 
 use std::collections::{BTreeMap, BTreeSet};
 
 use crate::instance::PinwheelInstance;
 
-/// ラベル付き状態: 各タスク i の urgency u_i = a_i - x_i - 1 を添字順に保持する。
+/// ラベル付き状態: 各タスク i の前回実行からの経過日数 `x_i`（`0 <= x_i < a_i`）を添字順に保持する。
 pub type LabeledState = Vec<u32>;
 
 /// タスク `executed` を実行した翌日の状態。`executed` 以外に締切超過のタスクがあれば None。
@@ -20,18 +22,18 @@ pub fn labeled_next(
     let mut next = vec![0u32; periods.len()];
     for (i, &period) in periods.iter().enumerate() {
         if i == executed {
-            next[i] = period - 1; // リセット
-        } else if state[i] == 0 {
-            return None; // タスク i が今日できず締切超過
+            next[i] = 0; // 今日実行 -> 経過日数リセット
+        } else if state[i] + 1 == period {
+            return None; // タスク i が a_i 日後回しになり締切超過
         } else {
-            next[i] = state[i] - 1;
+            next[i] = state[i] + 1;
         }
     }
     Some(next)
 }
 
 fn initial(periods: &[u32]) -> LabeledState {
-    periods.iter().map(|&a| a - 1).collect()
+    vec![0; periods.len()] // X0 = (0,…,0)
 }
 
 /// 初期状態 X0 から前方到達可能なラベル付き状態グラフ。
